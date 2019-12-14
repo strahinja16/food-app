@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  foodapi:
+    volumes:
+        - ".:/src/"
+    ports:
+       - "5000:5000"
+    depends_on:
+      - mssql
+    build:
+      context: .
+
+  mssql:
+    image: microsoft/mssql-server-linux
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Root123123
