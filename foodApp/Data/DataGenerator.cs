@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,17 +13,33 @@ namespace FoodApp.Data
 {
     public static class DataGenerator
     {
+        public static List<User> Users { get; private set; } = new List<User>();
+        public static string[] UserExcludedProperties = { "Recipes" };
+
+        public static List<Recipe> Recipes { get; private set; } = new List<Recipe>();
+        public static string[] RecipeExcludedProperties = { "User" };
+
+        public static Random rnd = new Random();
+
         public static void GenerateData(MigrationBuilder migrationBuilder)
         {
+            const int usersCount = 10;
+            const int recipesCount = 30;
+
             migrationBuilder.InsertData(
             table: "Users",
             columns: new[] { "Id", "Name", "Email", "Password" },
-            values: GenerateUsers(10));
+            values: GenerateUsers(usersCount));
+
+            migrationBuilder.InsertData(
+            table: "Recipes",
+            columns: new[] { "Id", "UserId", "Title", "Image", "PrepTime", "Kcal", "Carbs", "Fat", "Protein" },
+            values: GenerateRecipes(recipesCount));
         }
 
         public static object[,] GenerateUsers(int userCount)
         {
-            var userPropertiesCount = 4;
+            const int userPropertiesCount = 4;
             object[,] users = new object[userCount, userPropertiesCount];
 
             for (int i = 0; i < userCount; i++)
@@ -39,12 +56,18 @@ namespace FoodApp.Data
 
                 var user = testUser.Generate();
 
+                Users.Add(user);
+
                 var userGeneric = new List<object>();
 
-                foreach (var p in user.GetType().GetProperties())
+                foreach (var p in user.GetType().GetProperties().Where(p => p != typeof(IEnumerable)))
                 {
-                    Console.Write($" {JsonConvert.SerializeObject(p.GetValue(user, null), Formatting.Indented)} ");
-                    userGeneric.Add(p.GetValue(user, null));
+                    Console.WriteLine(JsonConvert.SerializeObject(p.Name, Formatting.Indented));
+
+                    if (!UserExcludedProperties.Contains(p.Name))
+                    {
+                        userGeneric.Add(p.GetValue(user, null));
+                    }
                 }
 
                 for (int j = 0; j < userGeneric.Count; j++ )
@@ -54,6 +77,57 @@ namespace FoodApp.Data
             }
 
             return users;
+        }
+
+        public static object[,] GenerateRecipes(int recipesCount)
+        {
+            const int recipePropertiesCount = 9;
+            object[,] recipes = new object[recipesCount, recipePropertiesCount];
+
+            for (int i = 0; i < recipesCount; i++)
+            {
+                var randomUser = Users[rnd.Next(0, Users.Count)];
+
+                var testRecipe = new Faker<Recipe>()
+
+                .RuleFor(r => r.Id, f => Guid.NewGuid())
+
+                .RuleFor(r => r.UserId, f => randomUser.Id)
+
+                .RuleFor(r => r.Title, f => f.Lorem.Word())
+
+                .RuleFor(r => r.Image, f => f.Image.LoremPixelUrl())
+
+                .RuleFor(r => r.PrepTime, f => f.Random.Number(5, 15))
+
+                .RuleFor(r => r.Kcal, f => f.Random.Number(5, 15))
+
+                .RuleFor(r => r.Carbs, f => f.Random.Number(50, 250))
+
+                .RuleFor(r => r.Fat, f => f.Random.Number(5, 50))
+
+                .RuleFor(r => r.Protein, f => f.Random.Number(10, 50));
+
+                var recipe = testRecipe.Generate();
+
+                var recipeGeneric = new List<object>();
+
+                foreach (var p in recipe.GetType().GetProperties())
+                {
+                    if (!RecipeExcludedProperties.Contains(p.Name))
+                    {
+                        recipeGeneric.Add(p.GetValue(recipe, null));
+                    }
+                }
+
+                for (int j = 0; j < recipeGeneric.Count; j++)
+                {
+                    recipes[i, j] = recipeGeneric.ElementAt(j);
+                }
+                
+            }
+
+            return recipes;
         }
 
         private static string HashPassword(string password)

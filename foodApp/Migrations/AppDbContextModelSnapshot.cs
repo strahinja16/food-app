@@ -19,6 +19,34 @@ namespace FoodApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("FoodApp.Model.Recipe", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Carbs");
+
+                    b.Property<int>("Fat");
+
+                    b.Property<string>("Image");
+
+                    b.Property<int>("Kcal");
+
+                    b.Property<int>("PrepTime");
+
+                    b.Property<int>("Protein");
+
+                    b.Property<string>("Title");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Recipes");
+                });
+
             modelBuilder.Entity("FoodApp.Model.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -33,6 +61,14 @@ namespace FoodApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FoodApp.Model.Recipe", b =>
+                {
+                    b.HasOne("FoodApp.Model.User", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

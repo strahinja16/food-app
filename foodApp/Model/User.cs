@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace FoodApp.Model
 {
     public class User
@@ -10,5 +12,7 @@ namespace FoodApp.Model
         public string Email { get; set; }
 
         public string Password { get; set; }
+
+        public List<Recipe> Recipes { get; set; }
     }
 }

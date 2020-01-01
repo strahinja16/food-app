@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200101180238_InitialMigration")]
+    [Migration("20200101185950_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,34 @@ namespace FoodApp.Migrations
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("FoodApp.Model.Recipe", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Carbs");
+
+                    b.Property<int>("Fat");
+
+                    b.Property<string>("Image");
+
+                    b.Property<int>("Kcal");
+
+                    b.Property<int>("PrepTime");
+
+                    b.Property<int>("Protein");
+
+                    b.Property<string>("Title");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Recipes");
+                });
 
             modelBuilder.Entity("FoodApp.Model.User", b =>
                 {
@@ -35,6 +63,14 @@ namespace FoodApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FoodApp.Model.Recipe", b =>
+                {
+                    b.HasOne("FoodApp.Model.User", "User")
+                        .WithMany("Recipes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
