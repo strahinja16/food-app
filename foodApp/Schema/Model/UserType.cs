@@ -14,7 +14,7 @@ namespace FoodApp.Schema.Model
                 .Type<IdType>();
 
             descriptor.Field(u => u.Name)
-                .Type<StringType>();
+                .Type<NonNullType<StringType>>();
         }
     }
 

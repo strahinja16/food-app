@@ -19,9 +19,11 @@
     <Folder Include="Schema\Input\" />
     <Folder Include="Schema\Input\User\" />
     <Folder Include="Schema\Model\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="28.4.4" />
     <PackageReference Include="HotChocolate" Version="10.3.1" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="10.3.1" />
     <PackageReference Include="HotChocolate.Types" Version="10.3.1" />

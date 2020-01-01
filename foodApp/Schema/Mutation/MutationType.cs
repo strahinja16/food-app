@@ -12,8 +12,8 @@ namespace FoodApp.Schema.Mutation
             base.Configure(descriptor);
 
             descriptor.Field(m => m.InsertUser(default, default))
-                .Type<UserType>()
-                .Argument("userInput", a => a.Type<InsertUserInputType>());
+                .Type<NonNullType<UserType>>()
+                .Argument("userInput", a => a.Type<NonNullType<InsertUserInputType>>());
         }
     }
 }

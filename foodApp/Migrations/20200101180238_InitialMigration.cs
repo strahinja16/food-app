@@ -1,4 +1,5 @@
 ﻿using System;
+using FoodApp.Data;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FoodApp.Migrations
@@ -12,12 +13,16 @@ namespace FoodApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            DataGenerator.GenerateData(migrationBuilder);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
