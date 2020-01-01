@@ -60,7 +60,7 @@ namespace FoodApp.Data
 
                 var userGeneric = new List<object>();
 
-                foreach (var p in user.GetType().GetProperties().Where(p => p != typeof(IEnumerable)))
+                foreach (var p in user.GetType().GetProperties())
                 {
                     Console.WriteLine(JsonConvert.SerializeObject(p.Name, Formatting.Indented));
 

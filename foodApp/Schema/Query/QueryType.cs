@@ -12,6 +12,9 @@ namespace FoodApp.Schema.Query
 
             descriptor.Field(q => q.GetUsers(default))
                 .Type<NonNullType<ListType<NonNullType<UserType>>>>();
+
+            descriptor.Field(q => q.GetRecipes(default))
+                .Type<NonNullType<ListType<NonNullType<RecipeType>>>>();
         }
     }
 }

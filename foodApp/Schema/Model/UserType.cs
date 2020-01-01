@@ -11,11 +11,10 @@ namespace FoodApp.Schema.Model
             base.Configure(descriptor);
 
             descriptor.Field(u => u.Id)
-                .Type<IdType>();
+                .Type<NonNullType<IdType>>();
 
             descriptor.Field(u => u.Name)
                 .Type<NonNullType<StringType>>();
         }
     }
-
 }

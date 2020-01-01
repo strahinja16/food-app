@@ -15,5 +15,10 @@ namespace FoodApp.Schema.Query
         {
             return (IReadOnlyList<User>)await userService.GetUsers();
         }
+
+        public async Task<IReadOnlyList<Recipe>> GetRecipes([Service] IRecipeService recipeService)
+        {
+            return (IReadOnlyList<Recipe>)await recipeService.GetRecipes();
+        }
     }
 }

@@ -33,14 +33,17 @@ namespace FoodApp
             services.AddDbContext<AppDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRecipeRepository, RecipeRepository>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRecipeService, RecipeService>();
 
             // Add GraphQL Services
             services.AddGraphQL(sb => SchemaBuilder.New()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
                 .AddType<UserType>()
+                .AddType<RecipeType>()
                 .AddServices(sb)
                 .Create());
         }
