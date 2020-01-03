@@ -1,7 +1,7 @@
 ﻿using System;
 using HotChocolate.Types;
 
-namespace FoodApp.Schema.Input.User
+namespace FoodApp.Graphql.Input.User
 {
     public class InsertUserInputType : InputObjectType<InsertUserInput>
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using FoodApp.Schema.Model;
+using FoodApp.Graphql.Type;
 using HotChocolate.Types;
 
-namespace FoodApp.Schema.Query
+namespace FoodApp.Graphql.Query
 {
     public class QueryType : ObjectType<Query>
     {

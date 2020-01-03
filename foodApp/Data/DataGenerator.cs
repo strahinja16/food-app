@@ -17,7 +17,12 @@ namespace FoodApp.Data
         public static string[] UserExcludedProperties = { "Recipes" };
 
         public static List<Recipe> Recipes { get; private set; } = new List<Recipe>();
-        public static string[] RecipeExcludedProperties = { "User" };
+        public static string[] RecipeExcludedProperties = { "User", "RecipeTags" };
+
+        public static List<Tag> Tags { get; private set; } = new List<Tag>();
+        public static string[] TagExcludedProperties = { "User", "RecipeTags" };
+
+        public static string[] RecipeTagExcludedProperties = { "Recipe", "Tag" };
 
         public static Random rnd = new Random();
 
@@ -25,16 +30,28 @@ namespace FoodApp.Data
         {
             const int usersCount = 10;
             const int recipesCount = 30;
+            const int tagsCount = 100;
+            const int tagsPerRecipe = 3;
 
             migrationBuilder.InsertData(
-            table: "Users",
-            columns: new[] { "Id", "Name", "Email", "Password" },
-            values: GenerateUsers(usersCount));
+                table: "Users",
+                columns: new[] { "Id", "Name", "Email", "Password" },
+                values: GenerateUsers(usersCount));
 
             migrationBuilder.InsertData(
-            table: "Recipes",
-            columns: new[] { "Id", "UserId", "Title", "Image", "PrepTime", "Kcal", "Carbs", "Fat", "Protein" },
-            values: GenerateRecipes(recipesCount));
+                table: "Recipes",
+                columns: new[] { "Id", "UserId", "Title", "Image", "PrepTime", "Kcal", "Carbs", "Fat", "Protein" },
+                values: GenerateRecipes(recipesCount));
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "Id", "Name" },
+                values: GenerateTags(tagsCount));
+
+            migrationBuilder.InsertData(
+                table: "RecipeTag",
+                columns: new[] { "RecipeId", "TagId" },
+                values: GenerateRecipeTags(tagsCount, tagsPerRecipe));
         }
 
         public static object[,] GenerateUsers(int userCount)
@@ -62,15 +79,13 @@ namespace FoodApp.Data
 
                 foreach (var p in user.GetType().GetProperties())
                 {
-                    Console.WriteLine(JsonConvert.SerializeObject(p.Name, Formatting.Indented));
-
                     if (!UserExcludedProperties.Contains(p.Name))
                     {
                         userGeneric.Add(p.GetValue(user, null));
                     }
                 }
 
-                for (int j = 0; j < userGeneric.Count; j++ )
+                for (int j = 0; j < userGeneric.Count; j++)
                 {
                     users[i, j] = userGeneric.ElementAt(j);
                 }
@@ -110,6 +125,8 @@ namespace FoodApp.Data
 
                 var recipe = testRecipe.Generate();
 
+                Recipes.Add(recipe);
+
                 var recipeGeneric = new List<object>();
 
                 foreach (var p in recipe.GetType().GetProperties())
@@ -124,10 +141,96 @@ namespace FoodApp.Data
                 {
                     recipes[i, j] = recipeGeneric.ElementAt(j);
                 }
-                
+
             }
 
             return recipes;
+        }
+
+        public static object[,] GenerateTags(int tagCount)
+        {
+            const int tagPropertiesCount = 2;
+            object[,] tags = new object[tagCount, tagPropertiesCount];
+
+            for (int i = 0; i < tagCount; i++)
+            {
+                var testTag = new Faker<Tag>()
+
+                .RuleFor(t => t.Id, f => Guid.NewGuid())
+
+                .RuleFor(t => t.Name, f => f.Lorem.Word());
+
+                var tag = testTag.Generate();
+
+                Tags.Add(tag);
+
+                var tagGeneric = new List<object>();
+
+                foreach (var p in tag.GetType().GetProperties())
+                {
+                    if (!TagExcludedProperties.Contains(p.Name))
+                    {
+                        tagGeneric.Add(p.GetValue(tag, null));
+                    }
+                }
+
+                for (int j = 0; j < tagGeneric.Count; j++)
+                {
+                    tags[i, j] = tagGeneric.ElementAt(j);
+                }
+            }
+
+            return tags;
+        }
+
+        public static object[,] GenerateRecipeTags(int tagsCount, int tagsPerRecipe)
+        {
+            const int recipeTagsPropertiesCount = 2;
+            object[,] recipeTagsGeneric = new object[tagsCount * tagsPerRecipe, recipeTagsPropertiesCount];
+
+            for (int i = 0; i < tagsCount; i++)
+            {
+                var recipeIds = new List<Guid>();
+
+                for (int j = 0; j < tagsPerRecipe; j++)
+                {
+                    var askForRecipe = true;
+
+                    Recipe recipe = null;
+
+                    while (askForRecipe)
+                    {
+                        recipe = Recipes[rnd.Next(0, Recipes.Count)];
+
+                        if (!recipeIds.Contains(recipe.Id))
+                        {
+                            recipeIds.Add(recipe.Id);
+                            askForRecipe = false;
+                        }
+                    }
+
+                    var recipeTag = new RecipeTag()
+                    {
+                        RecipeId = recipe.Id,
+                        Recipe = recipe,
+                        TagId = Tags[i].Id,
+                        Tag = Tags[i]
+                    };
+
+                    int k = 0;
+
+                    foreach (var p in recipeTag.GetType().GetProperties())
+                    {
+                        if (!RecipeTagExcludedProperties.Contains(p.Name))
+                        {
+                            recipeTagsGeneric[i + j * tagsCount, k] = p.GetValue(recipeTag, null);
+                            k++;
+                        }
+                    }
+                }
+            }
+
+            return recipeTagsGeneric;
         }
 
         private static string HashPassword(string password)

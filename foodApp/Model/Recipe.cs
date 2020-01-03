@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace FoodApp.Model
 {
     public class Recipe
@@ -8,6 +10,8 @@ namespace FoodApp.Model
         public Guid UserId { get; set; }
 
         public User User { get; set; }
+
+        public List<RecipeTag> RecipeTags { get; set; }
 
         public string Title { get; set; }
 

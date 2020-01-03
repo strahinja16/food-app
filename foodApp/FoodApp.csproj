@@ -11,15 +11,14 @@
     <Folder Include="Model\" />
     <Folder Include="Repository\" />
     <Folder Include="Repository\Interfaces\" />
-    <Folder Include="Schema\" />
-    <Folder Include="Schema\Query\" />
-    <Folder Include="Schema\Mutation\" />
-    <Folder Include="Service\" />
-    <Folder Include="Service\Interfaces\" />
-    <Folder Include="Schema\Input\" />
-    <Folder Include="Schema\Input\User\" />
-    <Folder Include="Schema\Model\" />
+    <Folder Include="Graphql\" />
+    <Folder Include="Graphql\Query\" />
+    <Folder Include="Graphql\Mutation\" />
+    <Folder Include="Graphql\Input\" />
+    <Folder Include="Graphql\Input\User\" />
+    <Folder Include="Graphql\Type\" />
     <Folder Include="Data\" />
+    <Folder Include="Graphql\Resolvers\" />
   </ItemGroup>
 
   <ItemGroup>

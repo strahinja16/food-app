@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FoodApp.Schema.Input.User
+namespace FoodApp.Graphql.Input.User
 {
     public class InsertUserInput
     {

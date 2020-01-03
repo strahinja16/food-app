@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using FoodApp.DbContexts;
 using FoodApp.Model;
 using FoodApp.Repository.Interfaces;
@@ -32,6 +33,13 @@ namespace FoodApp.Repository
         public async Task<IEnumerable<Recipe>> GetRecipes()
         {
             return await _dbContext.Recipes.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Recipe>> GetRecipesByUserId(Guid UserId)
+        {
+            return await _dbContext.Recipes
+                .Where(r => r.UserId == UserId)
+                .ToListAsync();
         }
 
         public async Task InsertRecipe(Recipe Recipe)

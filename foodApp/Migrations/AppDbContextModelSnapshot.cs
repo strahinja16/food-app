@@ -47,6 +47,31 @@ namespace FoodApp.Migrations
                     b.ToTable("Recipes");
                 });
 
+            modelBuilder.Entity("FoodApp.Model.RecipeTag", b =>
+                {
+                    b.Property<Guid>("RecipeId");
+
+                    b.Property<Guid>("TagId");
+
+                    b.HasKey("RecipeId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("RecipeTag");
+                });
+
+            modelBuilder.Entity("FoodApp.Model.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("FoodApp.Model.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -68,6 +93,19 @@ namespace FoodApp.Migrations
                     b.HasOne("FoodApp.Model.User", "User")
                         .WithMany("Recipes")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FoodApp.Model.RecipeTag", b =>
+                {
+                    b.HasOne("FoodApp.Model.Recipe", "Recipe")
+                        .WithMany("RecipeTags")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FoodApp.Model.Tag", "Tag")
+                        .WithMany("RecipeTags")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

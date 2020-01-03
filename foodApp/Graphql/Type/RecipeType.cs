@@ -1,8 +1,10 @@
 ﻿using System;
+using FoodApp.Graphql.Resolvers;
 using FoodApp.Model;
+using FoodApp.Repository.Interfaces;
 using HotChocolate.Types;
 
-namespace FoodApp.Schema.Model
+namespace FoodApp.Graphql.Type
 {
     public class RecipeType : ObjectType<Recipe>
     {
@@ -13,12 +15,18 @@ namespace FoodApp.Schema.Model
             descriptor.Field(r => r.Id)
                 .Type<NonNullType<IdType>>();
 
+           
+            // Ignored
             descriptor.Field(r => r.UserId)
                .Ignore();
 
             descriptor.Field(r => r.User)
                 .Ignore();
 
+            descriptor.Field(r => r.RecipeTags)
+                .Ignore();
+
+            // Properties
             descriptor.Field(r => r.Title)
                 .Type<NonNullType<StringType>>();
 
@@ -39,6 +47,11 @@ namespace FoodApp.Schema.Model
 
             descriptor.Field(r => r.Fat)
                 .Type<NonNullType<IntType>>();
+
+            // Resolvers
+            descriptor.Field<RecipeResolver>(t => t.GetTags(default, default))
+                .Type<NonNullType<ListType<TagType>>>();
+
         }
     }
 }

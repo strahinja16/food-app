@@ -1,8 +1,9 @@
 ﻿using System;
+using FoodApp.Graphql.Resolvers;
 using FoodApp.Model;
 using HotChocolate.Types;
 
-namespace FoodApp.Schema.Model
+namespace FoodApp.Graphql.Type
 {
     public class UserType : ObjectType<User>
     {
@@ -13,8 +14,20 @@ namespace FoodApp.Schema.Model
             descriptor.Field(u => u.Id)
                 .Type<NonNullType<IdType>>();
 
+            // Ignored
+            descriptor.Field(u => u.Password)
+                .Ignore();
+
+            // Properties
             descriptor.Field(u => u.Name)
                 .Type<NonNullType<StringType>>();
+
+            descriptor.Field(u => u.Email)
+                .Type<NonNullType<StringType>>();
+
+            // Resolvers
+            descriptor.Field<UserResolver>(t => t.GetRecipes(default, default))
+                 .Type<NonNullType<ListType<TagType>>>();
         }
     }
 }

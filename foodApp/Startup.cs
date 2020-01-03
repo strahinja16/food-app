@@ -1,12 +1,9 @@
 ﻿using FoodApp.DbContexts;
+using FoodApp.Graphql.Mutation;
+using FoodApp.Graphql.Query;
+using FoodApp.Graphql.Type;
 using FoodApp.Repository;
 using FoodApp.Repository.Interfaces;
-using FoodApp.Schema.Input.User;
-using FoodApp.Schema.Model;
-using FoodApp.Schema.Mutation;
-using FoodApp.Schema.Query;
-using FoodApp.Service;
-using FoodApp.Service.Interfaces;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.Execution.Configuration;
@@ -34,9 +31,7 @@ namespace FoodApp
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRecipeRepository, RecipeRepository>();
-
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRecipeService, RecipeService>();
+            services.AddTransient<ITagRepository, TagRepository>();
 
             // Add GraphQL Services
             services.AddGraphQL(sb => SchemaBuilder.New()
@@ -44,6 +39,7 @@ namespace FoodApp
                 .AddMutationType<MutationType>()
                 .AddType<UserType>()
                 .AddType<RecipeType>()
+                .AddType<TagType>()
                 .AddServices(sb)
                 .Create());
         }
@@ -57,11 +53,6 @@ namespace FoodApp
             }
 
             app.UseGraphQL("/graphql");
-
-
-            //app
-            //    .UseGraphQLHttpPost(new HttpPostMiddlewareOptions { Path = "/graphql" })
-            //    .UseGraphQLHttpGetSchema(new HttpGetSchemaMiddlewareOptions { Path = "/graphql/schema" });
         }
     }
 }

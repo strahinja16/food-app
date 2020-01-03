@@ -2,22 +2,22 @@
 using System.Threading.Tasks;
 using FoodApp.DbContexts;
 using FoodApp.Model;
-using FoodApp.Schema.Input.User;
-using FoodApp.Service.Interfaces;
+using FoodApp.Graphql.Input.User;
 using HotChocolate;
+using FoodApp.Repository.Interfaces;
 
-namespace FoodApp.Schema.Mutation
+namespace FoodApp.Graphql.Mutation
 {
     public class Mutation
     {
-        public async Task<User> InsertUser([Service] IUserService userService, InsertUserInput userInput)
+        public async Task<User> InsertUser([Service] IUserRepository userRepository, InsertUserInput userInput)
         {
             var user = new User()
             {
                 Name = userInput.Name
             };
 
-            await userService.InsertUser(user);
+            await userRepository.InsertUser(user);
 
             return user;
         }

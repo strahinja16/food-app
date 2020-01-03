@@ -1,9 +1,9 @@
 ﻿using System;
-using FoodApp.Schema.Input.User;
-using FoodApp.Schema.Model;
+using FoodApp.Graphql.Input.User;
+using FoodApp.Graphql.Type;
 using HotChocolate.Types;
 
-namespace FoodApp.Schema.Mutation
+namespace FoodApp.Graphql.Mutation
 {
     public class MutationType : ObjectType<Mutation>
     {
