@@ -6,6 +6,7 @@ using FoodApp.DbContexts;
 using FoodApp.Model;
 using FoodApp.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace FoodApp.Repository
 {
@@ -35,11 +36,13 @@ namespace FoodApp.Repository
             return await _dbContext.Recipes.ToListAsync();
         }
 
-        public async Task<IEnumerable<Recipe>> GetRecipesByUserId(Guid UserId)
+        public async Task<ILookup<Guid, Recipe>> GetRecipesByUserId(IReadOnlyList<Guid> guids)
         {
-            return await _dbContext.Recipes
-                .Where(r => r.UserId == UserId)
+            List<Recipe> recipes = await _dbContext.Recipes
+                .Where(r => guids.Contains(r.UserId))
                 .ToListAsync();
+
+            return recipes.ToLookup(r => r.UserId);
         }
 
         public async Task InsertRecipe(Recipe Recipe)

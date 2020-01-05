@@ -19,6 +19,7 @@
     <Folder Include="Graphql\Type\" />
     <Folder Include="Data\" />
     <Folder Include="Graphql\Resolvers\" />
+    <Folder Include="Graphql\ErrorFIlter\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,5 +39,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Graphql\Type\RecipeTagsType.cs" />
   </ItemGroup>
 </Project>

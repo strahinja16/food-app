@@ -1,4 +1,5 @@
 ﻿using FoodApp.DbContexts;
+using FoodApp.Graphql.ErrorFIlter;
 using FoodApp.Graphql.Mutation;
 using FoodApp.Graphql.Query;
 using FoodApp.Graphql.Type;
@@ -34,14 +35,29 @@ namespace FoodApp
             services.AddTransient<ITagRepository, TagRepository>();
 
             // Add GraphQL Services
-            services.AddGraphQL(sb => SchemaBuilder.New()
+            services.AddGraphQL(sb =>
+            {
+                var schema = SchemaBuilder.New()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
                 .AddType<UserType>()
                 .AddType<RecipeType>()
                 .AddType<TagType>()
                 .AddServices(sb)
-                .Create());
+                .Create();
+
+                schema.MakeExecutable(new QueryExecutionOptions
+                {
+                    IncludeExceptionDetails = true
+                });
+
+                return schema;
+            });
+
+            services.AddDataLoaderRegistry();
+
+            services.AddErrorFilter<MyErrorFilter>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

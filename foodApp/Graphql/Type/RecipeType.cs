@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using FoodApp.Graphql.Resolvers;
 using FoodApp.Model;
 using FoodApp.Repository.Interfaces;
+using GreenDonut;
+using HotChocolate.Resolvers;
 using HotChocolate.Types;
 
 namespace FoodApp.Graphql.Type
@@ -15,7 +19,6 @@ namespace FoodApp.Graphql.Type
             descriptor.Field(r => r.Id)
                 .Type<NonNullType<IdType>>();
 
-           
             // Ignored
             descriptor.Field(r => r.UserId)
                .Ignore();
@@ -51,7 +54,6 @@ namespace FoodApp.Graphql.Type
             // Resolvers
             descriptor.Field<RecipeResolver>(t => t.GetTags(default, default))
                 .Type<NonNullType<ListType<TagType>>>();
-
         }
     }
 }
