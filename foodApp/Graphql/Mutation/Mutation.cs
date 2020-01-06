@@ -22,5 +22,11 @@ namespace FoodApp.Graphql.Mutation
         {
             return await mutationService.InsertRecipe(recipeInput);
         }
+
+        public async Task<bool> DeleteUser([Service] IUserRepository userRepository, DeleteUserInput deleteUserInput)
+        {
+            await userRepository.DeleteUser(deleteUserInput.UserId);
+            return true;
+        }
     }
 }
