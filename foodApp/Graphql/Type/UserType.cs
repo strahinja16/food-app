@@ -15,7 +15,7 @@ namespace FoodApp.Graphql.Type
         protected override void Configure(IObjectTypeDescriptor<User> descriptor)
         {
             base.Configure(descriptor);
-
+            
             descriptor.Field(u => u.Id)
                 .Type<NonNullType<IdType>>();
 

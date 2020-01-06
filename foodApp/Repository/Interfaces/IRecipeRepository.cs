@@ -12,6 +12,7 @@ namespace FoodApp.Repository.Interfaces
         Task<IEnumerable<Recipe>> GetRecipes();
         Task<ILookup<Guid, Recipe>> GetRecipesByUserId(IReadOnlyList<Guid> guids);
         Task<Recipe> GetRecipeById(Guid RecipeId);
+        Task<Recipe> GetRecipeByTitle(string Title);
         Task InsertRecipe(Recipe Recipe);
         Task DeleteRecipe(Guid RecipeId);
         Task UpdateRecipe(Recipe Recipe);

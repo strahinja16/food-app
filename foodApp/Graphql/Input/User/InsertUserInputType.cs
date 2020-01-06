@@ -11,6 +11,12 @@ namespace FoodApp.Graphql.Input.User
 
             descriptor.Field(i => i.Name)
                 .Type<NonNullType<StringType>>();
+
+            descriptor.Field(i => i.Email)
+                .Type<NonNullType<StringType>>();
+
+            descriptor.Field(i => i.Password)
+                .Type<NonNullType<StringType>>();
         }
     }
 }

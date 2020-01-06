@@ -7,7 +7,16 @@ namespace FoodApp.Graphql.ErrorFIlter
     {
         public IError OnError(IError error)
         {
-            return error.AddExtension("exceptionMessage", error.Exception.Message);
+            var message = error.Exception.Message;
+            var exception = error.Exception.InnerException;
+
+            while (exception != null)
+            {
+                message = $"{message} {exception.Message}";
+                exception = exception.InnerException;
+            }
+
+            return error.AddExtension("exceptionMessage", message);
         }
     }
 }

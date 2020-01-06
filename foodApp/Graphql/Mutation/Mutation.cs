@@ -5,21 +5,22 @@ using FoodApp.Model;
 using FoodApp.Graphql.Input.User;
 using HotChocolate;
 using FoodApp.Repository.Interfaces;
+using FoodApp.Services;
+using FoodApp.Graphql.Input.Recipe;
+using FoodApp.Services.Interfaces;
 
 namespace FoodApp.Graphql.Mutation
 {
     public class Mutation
     {
-        public async Task<User> InsertUser([Service] IUserRepository userRepository, InsertUserInput userInput)
+        public async Task<User> InsertUser([Service] IMutationService mutationService, InsertUserInput userInput)
         {
-            var user = new User()
-            {
-                Name = userInput.Name
-            };
+            return await mutationService.InsertUser(userInput);
+        }
 
-            await userRepository.InsertUser(user);
-
-            return user;
+        public async Task<Recipe> InsertRecipe([Service] IMutationService mutationService, InsertRecipeInput recipeInput)
+        {
+            return await mutationService.InsertRecipe(recipeInput);
         }
     }
 }

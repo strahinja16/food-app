@@ -5,6 +5,8 @@ using FoodApp.Graphql.Query;
 using FoodApp.Graphql.Type;
 using FoodApp.Repository;
 using FoodApp.Repository.Interfaces;
+using FoodApp.Services;
+using FoodApp.Services.Interfaces;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.Execution.Configuration;
@@ -33,6 +35,9 @@ namespace FoodApp
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRecipeRepository, RecipeRepository>();
             services.AddTransient<ITagRepository, TagRepository>();
+
+            services.AddScoped<IMutationService, MutationService>();
+
 
             // Add GraphQL Services
             services.AddGraphQL(sb =>

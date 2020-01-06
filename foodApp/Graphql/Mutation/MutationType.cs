@@ -1,4 +1,5 @@
 ﻿using System;
+using FoodApp.Graphql.Input.Recipe;
 using FoodApp.Graphql.Input.User;
 using FoodApp.Graphql.Type;
 using HotChocolate.Types;
@@ -14,6 +15,10 @@ namespace FoodApp.Graphql.Mutation
             descriptor.Field(m => m.InsertUser(default, default))
                 .Type<NonNullType<UserType>>()
                 .Argument("userInput", a => a.Type<NonNullType<InsertUserInputType>>());
+
+            descriptor.Field(m => m.InsertRecipe(default, default))
+                .Type<NonNullType<RecipeType>>()
+                .Argument("recipeInput", a => a.Type<NonNullType<InsertRecipeInputType>>());
         }
     }
 }

@@ -20,6 +20,10 @@
     <Folder Include="Data\" />
     <Folder Include="Graphql\Resolvers\" />
     <Folder Include="Graphql\ErrorFIlter\" />
+    <Folder Include="Services\" />
+    <Folder Include="Graphql\Input\Recipe\" />
+    <Folder Include="Graphql\Input\Tag\" />
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -31,6 +31,14 @@ namespace FoodApp.Repository
             return await _dbContext.Recipes.FindAsync(RecipeId);
         }
 
+        public async Task<Recipe> GetRecipeByTitle(string Title)
+        {
+            return await _dbContext.Recipes
+                .Include(t => t.RecipeTags)
+                .Where(r => r.Title == Title)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Recipe>> GetRecipes()
         {
             return await _dbContext.Recipes.ToListAsync();

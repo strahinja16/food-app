@@ -9,7 +9,9 @@ namespace FoodApp.Repository.Interfaces
     {
         Task<IEnumerable<Tag>> GetTags();
         Task<IEnumerable<Tag>> GetTagsByRecipeId(Guid RecipeId);
+        Task<IEnumerable<Tag>> GetTagsByNames(List<string> tagNames);
         Task<Tag> GetTagById(Guid TagId);
+        Task<Tag> GetTagByName(string Name);
         Task InsertTag(Tag Tag);
         Task DeleteTag(Guid TagId);
         Task UpdateTag(Tag Tag);
