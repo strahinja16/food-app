@@ -23,6 +23,10 @@ namespace FoodApp.Graphql.Mutation
             descriptor.Field(m => m.DeleteUser(default, default))
                 .Type<BooleanType>()
                 .Argument("deleteUserInput", a => a.Type<NonNullType<DeleteUserInputType>>());
+
+            descriptor.Field(m => m.UpdateUser(default, default))
+                .Type<UserType>()
+                .Argument("updateUserInput", a => a.Type<NonNullType<UpdateUserInputType>>());
         }
     }
 }

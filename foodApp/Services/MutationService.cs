@@ -110,5 +110,18 @@ namespace FoodApp.Services
 
             return user;
         }
+
+        public async Task<User> UpdateUser(UpdateUserInput updateUserInput)
+        {
+            var user = await userRepository.GetUserById(updateUserInput.Id);
+
+            if (updateUserInput.Name != null) user.Name = updateUserInput.Name;
+            if (updateUserInput.Email != null) user.Email = updateUserInput.Email;
+            if (updateUserInput.Password != null)
+                user.Password = PasswordManager.HashPassword(updateUserInput.Password);
+
+            await userRepository.UpdateUser(user);
+            return user;
+        }
     }
 }

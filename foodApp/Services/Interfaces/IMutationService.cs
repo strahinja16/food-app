@@ -11,5 +11,7 @@ namespace FoodApp.Services.Interfaces
         Task<User> InsertUser(InsertUserInput userInput);
 
         Task<Recipe> InsertRecipe(InsertRecipeInput recipeInput);
+
+        Task<User> UpdateUser(UpdateUserInput updateUserInput);
     }
 }

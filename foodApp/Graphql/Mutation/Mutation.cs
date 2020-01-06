@@ -28,5 +28,10 @@ namespace FoodApp.Graphql.Mutation
             await userRepository.DeleteUser(deleteUserInput.UserId);
             return true;
         }
+
+        public async Task<User> UpdateUser([Service] IMutationService mutationService, UpdateUserInput updateUserInput)
+        {
+            return await mutationService.UpdateUser(updateUserInput);
+        }
     }
 }

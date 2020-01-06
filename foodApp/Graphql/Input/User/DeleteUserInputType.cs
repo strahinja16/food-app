@@ -10,7 +10,7 @@ namespace FoodApp.Graphql.Input.User
             base.Configure(descriptor);
 
             descriptor.Field(i => i.UserId)
-                .Type<NonNullType<StringType>>();
+                .Type<NonNullType<IdType>>();
         }
     }
 }
