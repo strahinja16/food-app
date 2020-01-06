@@ -61,7 +61,7 @@ namespace FoodApp
 
             services.AddDataLoaderRegistry();
 
-            services.AddErrorFilter<MyErrorFilter>();
+            services.AddErrorFilter<ExceptionErrorFilter>();
 
         }
 

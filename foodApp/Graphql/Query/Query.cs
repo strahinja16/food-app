@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FoodApp.DbContexts;
 using FoodApp.Model;
@@ -20,5 +21,10 @@ namespace FoodApp.Graphql.Query
         {
             return (IReadOnlyList<Recipe>)await recipeRepository.GetRecipes();
         }
+
+        public IQueryable<Tag> GetTags([Service] ITagRepository tagRepository)
+        {
+            return tagRepository.GetTagsAsIQueryable();
+        }   
     }
 }

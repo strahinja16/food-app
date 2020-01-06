@@ -15,6 +15,10 @@ namespace FoodApp.Graphql.Query
 
             descriptor.Field(q => q.GetRecipes(default))
                 .Type<NonNullType<ListType<NonNullType<RecipeType>>>>();
+
+            descriptor.Field(q => q.GetTags(default))
+                .Type<NonNullType<ListType<NonNullType<TagType>>>>()
+                .UseFiltering();
         }
     }
 }

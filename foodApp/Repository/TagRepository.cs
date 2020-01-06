@@ -43,6 +43,11 @@ namespace FoodApp.Repository
             return await _dbContext.Tags.ToListAsync();
         }
 
+        public IQueryable<Tag> GetTagsAsIQueryable()
+        {
+            return _dbContext.Tags.AsQueryable();
+        }
+
         public async Task<IEnumerable<Tag>> GetTagsByNames(List<string> tagNames)
         {
             return await _dbContext.Tags

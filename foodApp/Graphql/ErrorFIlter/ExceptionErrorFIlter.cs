@@ -3,9 +3,9 @@ using HotChocolate;
 
 namespace FoodApp.Graphql.ErrorFIlter
 {
-    public class MyErrorFilter : IErrorFilter
+    public class ExceptionErrorFilter : IErrorFilter
     {
-        public IError OnError(IError error)
+        public IError   OnError(IError error)
         {
             var message = error.Exception.Message;
             var exception = error.Exception.InnerException;
