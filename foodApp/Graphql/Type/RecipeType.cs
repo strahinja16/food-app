@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FoodApp.Graphql.Resolvers;
 using FoodApp.Model;
 using FoodApp.Repository.Interfaces;
 using GreenDonut;
@@ -52,8 +49,20 @@ namespace FoodApp.Graphql.Type
                 .Type<NonNullType<IntType>>();
 
             // Resolvers
-            descriptor.Field<RecipeResolver>(t => t.GetTags(default, default))
-                .Type<NonNullType<ListType<TagType>>>();
+            descriptor
+               .Field("tags")
+               .Type<NonNullType<ListType<TagType>>>()
+               .Resolver(ctx =>
+               {
+                   var repository = ctx.Service<ITagRepository>();
+
+                   IDataLoader<Guid, Tag[]> recipeDataLoader =
+                       ctx.GroupDataLoader<Guid, Tag>(
+                           "tagsByRecipeId",
+                           repository.GetTagsByRecipeId);
+
+                   return recipeDataLoader.LoadAsync(ctx.Parent<Recipe>().Id);
+               });
         }
     }
 }

@@ -3,9 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using FoodApp.Graphql.Input.Recipe;
 using FoodApp.Graphql.Input.User;
+using FoodApp.Graphql.Message;
 using FoodApp.Model;
 using FoodApp.Repository.Interfaces;
 using FoodApp.Services.Interfaces;
+using HotChocolate.Subscriptions;
 
 namespace FoodApp.Services
 {
@@ -25,7 +27,7 @@ namespace FoodApp.Services
             this.tagRepository = tagRepository;
         }
 
-        public async Task<Recipe> InsertRecipe(InsertRecipeInput recipeInput)
+        public async Task<Recipe> InsertRecipe(InsertRecipeInput recipeInput, IEventSender eventSender)
         {
             var user = await userRepository.GetUserById(recipeInput.UserId);
 
@@ -75,9 +77,7 @@ namespace FoodApp.Services
 
                     await tagRepository.InsertTag(tag);
 
-                    System.Diagnostics.Debug.WriteLine($"here");
                     var savedTag = await tagRepository.GetTagByName(inputTag.Name);
-                    System.Diagnostics.Debug.WriteLine($"{tag.Id}");
 
                     var recipeTag = new RecipeTag()
                     {
@@ -93,6 +93,16 @@ namespace FoodApp.Services
             }
 
             await recipeRepository.Save();
+
+            var userRecipeInfo = new UserRecipeInfo()
+            {
+                UserId = user.Id,
+                UserName = user.Name,
+                RecipeId = savedRecipe.Id,
+                RecipeCount = user.Recipes.Count
+            };
+
+            await eventSender.SendAsync(new OnInsertRecipeMessage(user.Id, userRecipeInfo));
 
             return savedRecipe;
         }

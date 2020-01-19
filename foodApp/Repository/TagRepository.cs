@@ -25,6 +25,20 @@ namespace FoodApp.Repository
             await Save();
         }
 
+        public async Task<ILookup<Guid, Tag>> GetTagsByRecipeId(IReadOnlyList<Guid> guids)
+        {
+            List<Tag> tags = await _dbContext.Tags
+                .Include(t => t.RecipeTags)
+                .Where(t => t.RecipeTags
+                    .Select(rt => rt.RecipeId)
+                    .Contains(guids[0]))
+                .ToListAsync();
+
+            return tags.ToLookup(t => t.RecipeTags
+                .Select(rt=> rt.RecipeId)
+                .First(rId => rId == guids[0]));
+        }
+
         public async Task<Tag> GetTagById(Guid TagId)
         {
             return await _dbContext.Tags.FindAsync(TagId);
@@ -56,15 +70,9 @@ namespace FoodApp.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Tag>> GetTagsByRecipeId(Guid RecipeId)
+        public Task<IEnumerable<Tag>> GetTagsByRecipeId(Guid RecipeId)
         {
-            return await _dbContext.Tags
-                .Include(tag => tag.RecipeTags)
-                .SelectMany(tag => tag.RecipeTags, (tag, recipeTag) => new { tag, recipeTag.RecipeId })
-                    .Where(t => t.RecipeId == RecipeId)
-                    .Select(t => t.tag)
-                    .Distinct()
-                    .ToListAsync();
+            throw new NotImplementedException();
         }
 
         public async Task InsertTag(Tag Tag)

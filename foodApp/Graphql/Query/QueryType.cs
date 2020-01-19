@@ -1,7 +1,8 @@
 ﻿using System;
+using FoodApp.Graphql.Input.Recipe;
 using FoodApp.Graphql.Type;
 using HotChocolate.Types;
-
+            
 namespace FoodApp.Graphql.Query
 {
     public class QueryType : ObjectType<Query>
@@ -13,8 +14,8 @@ namespace FoodApp.Graphql.Query
             descriptor.Field(q => q.GetUsers(default))
                 .Type<NonNullType<ListType<NonNullType<UserType>>>>();
 
-            descriptor.Field(q => q.GetRecipes(default))
-                .Type<NonNullType<ListType<NonNullType<RecipeType>>>>();
+            descriptor.Field(q => q.GetRecipe(default, default))
+                .Type<NonNullType<RecipeType>>();
 
             descriptor.Field(q => q.GetTags(default))
                 .Type<NonNullType<ListType<NonNullType<TagType>>>>()

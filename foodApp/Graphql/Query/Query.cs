@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FoodApp.DbContexts;
+using FoodApp.Graphql.Input.Recipe;
 using FoodApp.Model;
 using FoodApp.Repository.Interfaces;
 using HotChocolate;
@@ -17,9 +18,9 @@ namespace FoodApp.Graphql.Query
             return (IReadOnlyList<User>)await userRepository.GetUsers();
         }
 
-        public async Task<IReadOnlyList<Recipe>> GetRecipes([Service] IRecipeRepository recipeRepository)
+        public async Task<Recipe> GetRecipe([Service] IRecipeRepository recipeRepository, GetRecipeInput getRecipeInput)
         {
-            return (IReadOnlyList<Recipe>)await recipeRepository.GetRecipes();
+            return await recipeRepository.GetRecipeById(getRecipeInput.RecipeId);
         }
 
         public IQueryable<Tag> GetTags([Service] ITagRepository tagRepository)

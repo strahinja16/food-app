@@ -2,6 +2,7 @@
 using FoodApp.Graphql.ErrorFIlter;
 using FoodApp.Graphql.Mutation;
 using FoodApp.Graphql.Query;
+using FoodApp.Graphql.Subscription;
 using FoodApp.Graphql.Type;
 using FoodApp.Repository;
 using FoodApp.Repository.Interfaces;
@@ -10,6 +11,7 @@ using FoodApp.Services.Interfaces;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.Execution.Configuration;
+using HotChocolate.Subscriptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -45,9 +47,11 @@ namespace FoodApp
                 var schema = SchemaBuilder.New()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
+                .AddSubscriptionType<SubscriptionType>()
                 .AddType<UserType>()
                 .AddType<RecipeType>()
                 .AddType<TagType>()
+                .AddType<UserRecipeInfoType>()
                 .AddServices(sb)
                 .Create();
 
@@ -63,6 +67,7 @@ namespace FoodApp
 
             services.AddErrorFilter<ExceptionErrorFilter>();
 
+            services.AddInMemorySubscriptionProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +78,9 @@ namespace FoodApp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseGraphQL("/graphql");
+            app
+                .UseWebSockets()
+                .UseGraphQL("/graphql");
         }
     }
 }

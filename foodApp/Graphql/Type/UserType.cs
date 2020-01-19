@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using FoodApp.Graphql.Resolvers;
 using FoodApp.Model;
-using FoodApp.Repository;
 using FoodApp.Repository.Interfaces;
 using GreenDonut;
 using HotChocolate.Resolvers;
@@ -30,21 +27,21 @@ namespace FoodApp.Graphql.Type
             descriptor.Field(u => u.Email)
                 .Type<NonNullType<StringType>>();
 
-            // Resolvers
-            descriptor
-                .Field("recipes")
-                .Type<NonNullType<ListType<RecipeType>>>()
-                .Resolver(ctx =>
-                {
-                    var repository = ctx.Service<IRecipeRepository>();
+            //// Resolvers
+            //descriptor
+            //    .Field("recipes")
+            //    .Type<NonNullType<ListType<RecipeType>>>()
+            //    .Resolver(ctx =>
+            //    {
+            //        var repository = ctx.Service<IRecipeRepository>();
 
-                    IDataLoader<Guid, Recipe[]> recipeDataLoader =
-                        ctx.GroupDataLoader<Guid, Recipe>(
-                            "recipesByUserId",
-                            repository.GetRecipesByUserId);
+            //        IDataLoader<Guid, Recipe[]> recipeDataLoader =
+            //            ctx.GroupDataLoader<Guid, Recipe>(
+            //                "recipesByUserId",
+            //                repository.GetRecipesByUserId);
 
-                    return recipeDataLoader.LoadAsync(ctx.Parent<User>().Id);
-                });
+            //        return recipeDataLoader.LoadAsync(ctx.Parent<User>().Id);
+            //    });
         }
     }
 }

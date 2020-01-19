@@ -10,6 +10,7 @@ namespace FoodApp.Repository.Interfaces
     {
         Task<IEnumerable<Tag>> GetTags();
         Task<IEnumerable<Tag>> GetTagsByRecipeId(Guid RecipeId);
+        Task<ILookup<Guid, Tag>> GetTagsByRecipeId(IReadOnlyList<Guid> guids);
         Task<IEnumerable<Tag>> GetTagsByNames(List<string> tagNames);
         IQueryable<Tag> GetTagsAsIQueryable();
         Task<Tag> GetTagById(Guid TagId);

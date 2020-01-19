@@ -18,12 +18,13 @@
     <Folder Include="Graphql\Input\User\" />
     <Folder Include="Graphql\Type\" />
     <Folder Include="Data\" />
-    <Folder Include="Graphql\Resolvers\" />
     <Folder Include="Graphql\ErrorFIlter\" />
     <Folder Include="Services\" />
     <Folder Include="Graphql\Input\Recipe\" />
     <Folder Include="Graphql\Input\Tag\" />
     <Folder Include="Services\Interfaces\" />
+    <Folder Include="Graphql\Subscription\" />
+    <Folder Include="Graphql\Message\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +38,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="HotChocolate.Types.Filters" Version="10.3.2" />
+    <PackageReference Include="HotChocolate.Language" Version="10.3.3" />
+    <PackageReference Include="HotChocolate.Abstractions" Version="10.3.3" />
+    <PackageReference Include="HotChocolate.Subscriptions" Version="10.3.3" />
+    <PackageReference Include="HotChocolate.Subscriptions.InMemory" Version="10.3.3" />
   </ItemGroup>
 
   <ItemGroup>

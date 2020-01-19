@@ -8,6 +8,7 @@ using FoodApp.Repository.Interfaces;
 using FoodApp.Services;
 using FoodApp.Graphql.Input.Recipe;
 using FoodApp.Services.Interfaces;
+using HotChocolate.Subscriptions;
 
 namespace FoodApp.Graphql.Mutation
 {
@@ -18,9 +19,12 @@ namespace FoodApp.Graphql.Mutation
             return await mutationService.InsertUser(userInput);
         }
 
-        public async Task<Recipe> InsertRecipe([Service] IMutationService mutationService, InsertRecipeInput recipeInput)
+        public async Task<Recipe> InsertRecipe(
+            [Service] IMutationService mutationService,
+            [Service] IEventSender eventSender,
+            InsertRecipeInput recipeInput)
         {
-            return await mutationService.InsertRecipe(recipeInput);
+            return await mutationService.InsertRecipe(recipeInput, eventSender);
         }
 
         public async Task<bool> DeleteUser([Service] IUserRepository userRepository, DeleteUserInput deleteUserInput)
