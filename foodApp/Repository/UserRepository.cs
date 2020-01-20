@@ -29,6 +29,13 @@ namespace FoodApp.Repository
             return await _dbContext.Users.FindAsync(UserId);
         }
 
+        public async Task<User> GetUserByIdWithRecipes(Guid UserId)
+        {
+            return await _dbContext.Users
+                .Include(u => u.Recipes)
+                .FirstAsync(u => u.Id == UserId);
+        }
+
         public async Task<IEnumerable<User>> GetUsers()
         {
             return await _dbContext.Users.ToListAsync();

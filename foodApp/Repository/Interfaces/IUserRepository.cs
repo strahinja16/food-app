@@ -9,6 +9,7 @@ namespace FoodApp.Repository.Interfaces
     {
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUserById(Guid UserId);
+        Task<User> GetUserByIdWithRecipes(Guid UserId);
         Task InsertUser(User User);
         Task DeleteUser(Guid UserId);
         Task UpdateUser(User User);

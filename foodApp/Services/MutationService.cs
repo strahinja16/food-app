@@ -29,7 +29,7 @@ namespace FoodApp.Services
 
         public async Task<Recipe> InsertRecipe(InsertRecipeInput recipeInput, IEventSender eventSender)
         {
-            var user = await userRepository.GetUserById(recipeInput.UserId);
+            var user = await userRepository.GetUserByIdWithRecipes(recipeInput.UserId);
 
             if (user == null)
             {
